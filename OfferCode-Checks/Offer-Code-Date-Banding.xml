@@ -30,20 +30,20 @@ testRunner.testCase.setPropertyValue( 'PaymentNumber', '1')
 //testRunner.testCase.setPropertyValue('FeesDate','2019-11-28T06:40:00')
 
 ////Band 1
-testRunner.testCase.setPropertyValue('RequestDateTime','2020-02-18T07:30:00')
-testRunner.testCase.setPropertyValue('PolicyStartDateTime','2020-02-18T07:30:00')
-testRunner.testCase.setPropertyValue('PolicyEndDateTime','2020-02-18T07:29:00')
-testRunner.testCase.setPropertyValue('TaxDateTime','2020-02-18T07:30:00')
-testRunner.testCase.setPropertyValue('PriceDate','2020-02-18T07:30:00')
-testRunner.testCase.setPropertyValue('FeesDate','2020-02-18T07:30:00')
-
-////Band 0
 //testRunner.testCase.setPropertyValue('RequestDateTime','2020-02-18T07:29:00')
 //testRunner.testCase.setPropertyValue('PolicyStartDateTime','2020-02-18T07:29:00')
 //testRunner.testCase.setPropertyValue('PolicyEndDateTime','2021-02-17T23:59:00')
 //testRunner.testCase.setPropertyValue('TaxDateTime','2020-02-18T07:29:00')
 //testRunner.testCase.setPropertyValue('PriceDate','2020-02-18T07:29:00')
 //testRunner.testCase.setPropertyValue('FeesDate','2020-02-18T07:29:00')
+
+////Band 0
+testRunner.testCase.setPropertyValue('RequestDateTime','2020-02-24T07:30:00')
+testRunner.testCase.setPropertyValue('PolicyStartDateTime','2020-02-24T07:30:00')
+testRunner.testCase.setPropertyValue('PolicyEndDateTime','2021-02-23T23:59:00')
+testRunner.testCase.setPropertyValue('TaxDateTime','2020-02-24T07:30:00')
+testRunner.testCase.setPropertyValue('PriceDate','2020-02-24T07:30:00')
+testRunner.testCase.setPropertyValue('FeesDate','2020-02-24T07:30:00')
 
 ////Band 2
 //testRunner.testCase.setPropertyValue('RequestDateTime','2019-12-05T06:45:00')
@@ -91,7 +91,7 @@ bw.close();</script>
     <con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <con:dataSource type="Excel">
         <con:configuration>
-          <file>N:/Systems_development/RIO/Road Renewals/SOAP pricing/RPP-40 - Renewal offer codes/18-02-20/Band1/Input For SOAP Offer mapping checking Band 1.xlsx</file>
+          <file>N:/Road Pricing/00 - NEW FILING STRUCTURE/Testing Team Data/Pricing Service Testing/Testing areas/New business/Offers/24-02-20/Band0/Include ACV39 and ONLINEEM/Input For SOAP 24022020_Band0.xlsx</file>
           <worksheet>SOAP</worksheet>
           <cell>A2</cell>
           <ignoreEmpty>false</ignoreEmpty>
@@ -450,7 +450,7 @@ log.info(context.expand( '${#TestCase#BRCList_XML}' ))]]></script>
       </gen:GenerateQuoteRequest>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-        <con:assertion type="SOAP Response" id="2b731f21-f290-4a01-a4a1-d39e47d7e986"/>
+        <con:assertion type="SOAP Response" id="2b731f21-f290-4a01-a4a1-d39e47d7e986" disabled="true"/>
         <con:credentials>
           <con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile>
           <con:authType>No Authorization</con:authType>
@@ -649,11 +649,11 @@ def func_CheckOffer(payment,element,name,syntax)
 {
 	log.info(payment+"," + element +"," + name+","  +syntax)
 	Float ProductTotal
-	Float R_Total=Float.parseFloat(context.expand( '${OCNB Request#Response#declare namespace tns1=\'http://www.theaa.com/CommonServices/Data/Product.2\'; declare namespace tns3=\'http://www.theaa.com/CommonServices/Message/BS/Road/GenerateQuote_NB.2\'; //tns3:GenerateQuoteResponse[1]/tns3:ProductList[1]/tns1:Payment[tns1:PaymentType="' + payment + '"]/tns1:Product[tns1:ProductPriceName="' + name + '"]/tns1:PriceList[1]/tns1:Price[1]/tns1:TotalLessDiscounts[1]}' ))
-	Float R_ProductTotal=Float.parseFloat(context.expand( '${OCNB Request#Response#declare namespace tns1=\'http://www.theaa.com/CommonServices/Data/Product.2\'; declare namespace tns3=\'http://www.theaa.com/CommonServices/Message/BS/Road/GenerateQuote_NB.2\'; //tns3:GenerateQuoteResponse[1]/tns3:ProductList[1]/tns1:Payment[tns1:PaymentType="' + payment + '"]/tns1:Product[tns1:ProductPriceName="' + name + '"]/tns1:PriceList[1]/tns1:Price[1]/tns1:Total[1]}' ))
+	Float R_Total=			Float.parseFloat(context.expand( '${OCNB Request#Response#declare namespace tns1=\'http://www.theaa.com/CommonServices/Data/Product.2\'; declare namespace tns3=\'http://www.theaa.com/CommonServices/Message/BS/Road/GenerateQuote_NB.2\'; //tns3:GenerateQuoteResponse[1]/tns3:ProductList[1]/tns1:Payment[tns1:PaymentType="' + payment + '"]/tns1:Product[tns1:ProductPriceName="' + name + '"]/tns1:PriceList[1]/tns1:Price[1]/tns1:TotalLessDiscounts[1]}' ))
+	Float R_ProductTotal=	Float.parseFloat(context.expand( '${OCNB Request#Response#declare namespace tns1=\'http://www.theaa.com/CommonServices/Data/Product.2\'; declare namespace tns3=\'http://www.theaa.com/CommonServices/Message/BS/Road/GenerateQuote_NB.2\'; //tns3:GenerateQuoteResponse[1]/tns3:ProductList[1]/tns1:Payment[tns1:PaymentType="' + payment + '"]/tns1:Product[tns1:ProductPriceName="' + name + '"]/tns1:PriceList[1]/tns1:Price[1]/tns1:Total[1]}' ))
 	def OfferType=context.expand( '${OCRoadAll#' + payment + ',' + syntax +  ',TYPE}' )
 	Float OfferAmount=Float.parseFloat(context.expand( '${OCRoadAll#' + payment + ',' + syntax +  ',AMOUNT}' ))
-	//log.info(OfferType + OfferAmount)	
+	log.info(OfferType + OfferAmount)	
 	if (OfferType == "T")
 	{
 		ProductTotal = OfferAmount
@@ -785,7 +785,7 @@ bw.close();</script>
   <con:properties>
     <con:property>
       <con:name>TotalOfValuesChecked</con:name>
-      <con:value>365</con:value>
+      <con:value>0</con:value>
     </con:property>
     <con:property>
       <con:name>NumOfValuesFailed</con:name>
@@ -793,47 +793,47 @@ bw.close();</script>
     </con:property>
     <con:property>
       <con:name>NumOfIterations</con:name>
-      <con:value>73</con:value>
+      <con:value>9</con:value>
     </con:property>
     <con:property>
       <con:name>PaymentNumber</con:name>
-      <con:value>2</con:value>
+      <con:value>3</con:value>
     </con:property>
     <con:property>
       <con:name>RequestDateTime</con:name>
-      <con:value>2020-02-18T07:30:00</con:value>
+      <con:value>2020-02-24T07:30:00</con:value>
     </con:property>
     <con:property>
       <con:name>PolicyStartDateTime</con:name>
-      <con:value>2020-02-18T07:30:00</con:value>
+      <con:value>2020-02-24T07:30:00</con:value>
     </con:property>
     <con:property>
       <con:name>PolicyEndDateTime</con:name>
-      <con:value>2020-02-18T07:29:00</con:value>
+      <con:value>2021-02-23T23:59:00</con:value>
     </con:property>
     <con:property>
       <con:name>TaxDateTime</con:name>
-      <con:value>2020-02-18T07:30:00</con:value>
+      <con:value>2020-02-24T07:30:00</con:value>
     </con:property>
     <con:property>
       <con:name>PriceDate</con:name>
-      <con:value>2020-02-18T07:30:00</con:value>
+      <con:value>2020-02-24T07:30:00</con:value>
     </con:property>
     <con:property>
       <con:name>FeesDate</con:name>
-      <con:value>2020-02-18T07:30:00</con:value>
+      <con:value>2020-02-24T07:30:00</con:value>
     </con:property>
     <con:property>
       <con:name>File</con:name>
-      <con:value>N:/Systems_development/RIO/Road Renewals/Soap UI/Test Results/NBE2E/OfferCodeCheck20200214T102939.txt</con:value>
+      <con:value>N:/Systems_development/RIO/Road Renewals/Soap UI/Test Results/NBE2E/OfferCodeCheck20200221T101835.txt</con:value>
     </con:property>
     <con:property>
       <con:name>FileFailed</con:name>
-      <con:value>N:/Systems_development/RIO/Road Renewals/Soap UI/Test Results/NBE2E/OfferCodeCheckFailed20200214T102939.txt</con:value>
+      <con:value>N:/Systems_development/RIO/Road Renewals/Soap UI/Test Results/NBE2E/OfferCodeCheckFailed20200221T101835.txt</con:value>
     </con:property>
     <con:property>
       <con:name>ProductList_XML</con:name>
-      <con:value><![CDATA[<gen:Product><prod:ProductCode>PRD_UK_0001</prod:ProductCode></gen:Product><gen:Product><prod:ProductCode>PRD_UK_0003</prod:ProductCode></gen:Product><gen:Product><prod:ProductCode>PRD_UK_0004</prod:ProductCode></gen:Product><gen:Product><prod:ProductCode>PRD_UK_0005</prod:ProductCode></gen:Product><gen:Product><prod:ProductCode>PRD_UK_0009</prod:ProductCode></gen:Product>]]></con:value>
+      <con:value>&lt;gen:Product>&lt;prod:ProductCode>PRD_UK_0001&lt;/prod:ProductCode>&lt;/gen:Product></con:value>
     </con:property>
     <con:property>
       <con:name>RoadList</con:name>
@@ -849,19 +849,19 @@ bw.close();</script>
     </con:property>
     <con:property>
       <con:name>BRCList_XML</con:name>
-      <con:value>&lt;gen:VehicleAgeList>&lt;gen:VehicleAge>0&lt;/gen:VehicleAge>&lt;/gen:VehicleAgeList></con:value>
+      <con:value/>
     </con:property>
     <con:property>
       <con:name>Cover</con:name>
-      <con:value>1</con:value>
+      <con:value>0</con:value>
     </con:property>
     <con:property>
       <con:name>ID</con:name>
-      <con:value>73</con:value>
+      <con:value>1</con:value>
     </con:property>
     <con:property>
       <con:name>payment</con:name>
-      <con:value>RAP</con:value>
+      <con:value>SAP</con:value>
     </con:property>
   </con:properties>
   <con:reportParameters/>
